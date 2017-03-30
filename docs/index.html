@@ -37,7 +37,7 @@
       <script>
 
 $('#extract').click(function(evt) {
-  $('#content').clear();
+  $('#content').empty();
   $('#content').text($('#text').val());
   return $('#content').tagExtract({
     clusters: ['label-primary', 'label-info', 'label-warning', 'label-danger'],
