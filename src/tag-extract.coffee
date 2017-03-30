@@ -8,15 +8,22 @@ $.fn.extend
 
 $.extend $.fn.tagExtract,
   default_options:
+    max:'auto'
+    min:3
     ignored : ['the', 'be','to','of','and','a','in','that','have','I','it','for','not','on','with','he','as','you','do','at','this','but','his','by','from','they','we','say','her','she','or','an','will','my','one','all','would','there','their','what','so','up','out','if','about','who','get','which','go','me','when','make','can','like','time','no','just','him','know','take','person','into','year','your','good','some','could','them','see','other','than','then','now','look','only','come','its','over','think','also','back','after','use','two','how','our','work','first','well','way','even','new','want','because','any','these','give','day','most','us','were','was','has','less','more','is','s','said','between','without','are','been','such','did','both','had','still','within']
 
   init: (el, opts) ->
         ignored = opts['ignored']
-        text = $(el).text()
+        target = opts['target']        
+        if ($(el).is("textarea"))
+           text = $(el).val()
+        else
+           text = $(el).text()
         
         clusters = opts['clusters']        
         bins = clusters.length        
         tagnumber = opts['max']
+                
 
         # remove the words to be ignored
         for word in ignored
@@ -36,8 +43,7 @@ $.extend $.fn.tagExtract,
                     else
                         occurences[word] = 1
         
-        
-        
+
         # transform the occcurence in percentages
         sum = 0
         for k,v of occurences
@@ -46,6 +52,10 @@ $.extend $.fn.tagExtract,
                 
         avg = sum / numofwords
         
+        if tagnumber == 'auto'
+            tagnumber = numofwords // 10
+            if tagnumber < opts['min']
+               tagnumber = opts['min']
 
         # sort them
         occurences = do (occurences) ->
@@ -93,10 +103,9 @@ $.extend $.fn.tagExtract,
             binhash[minkey].push k        
         # place them in the targets
 
-        obj = $(el).find('.tags-extracted').each (i,obj) ->        
-            c = 0
-            $(obj).empty()
-            $(obj).append("TAGS:")
+        obj = $("##{target}").each (i,obj) ->        
+            c = 0            
+            $(obj).empty()                        
             for k in Object.keys(binhash).reverse()
                 b = binhash[k]
                 cstyle = clusters[c]
@@ -104,3 +113,5 @@ $.extend $.fn.tagExtract,
                 for tag in b                    
                     label = $('<span>').attr({class:"label #{cstyle}"}).append(tag)
                     $(obj).append(label)
+                    
+

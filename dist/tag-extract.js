@@ -12,12 +12,19 @@ $.fn.extend({
 
 $.extend($.fn.tagExtract, {
   default_options: {
+    max: 'auto',
+    min: 3,
     ignored: ['the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'I', 'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at', 'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she', 'or', 'an', 'will', 'my', 'one', 'all', 'would', 'there', 'their', 'what', 'so', 'up', 'out', 'if', 'about', 'who', 'get', 'which', 'go', 'me', 'when', 'make', 'can', 'like', 'time', 'no', 'just', 'him', 'know', 'take', 'person', 'into', 'year', 'your', 'good', 'some', 'could', 'them', 'see', 'other', 'than', 'then', 'now', 'look', 'only', 'come', 'its', 'over', 'think', 'also', 'back', 'after', 'use', 'two', 'how', 'our', 'work', 'first', 'well', 'way', 'even', 'new', 'want', 'because', 'any', 'these', 'give', 'day', 'most', 'us', 'were', 'was', 'has', 'less', 'more', 'is', 's', 'said', 'between', 'without', 'are', 'been', 'such', 'did', 'both', 'had', 'still', 'within']
   },
   init: function(el, opts) {
-    var avg, binhash, binrange, bins, clusters, diff, hash, i, ignored, k, key, line, max, min, minkey, minval, numofwords, o, obj, occurences, out, re, score, sum, tagnumber, text, token, v, word, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _m, _n, _o, _ref, _ref1, _ref2, _ref3, _ref4;
+    var avg, binhash, binrange, bins, clusters, diff, hash, i, ignored, k, key, line, max, min, minkey, minval, numofwords, o, obj, occurences, out, re, score, sum, tagnumber, target, text, token, v, word, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _m, _n, _o, _ref, _ref1, _ref2, _ref3, _ref4;
     ignored = opts['ignored'];
-    text = $(el).text();
+    target = opts['target'];
+    if ($(el).is("textarea")) {
+      text = $(el).val();
+    } else {
+      text = $(el).text();
+    }
     clusters = opts['clusters'];
     bins = clusters.length;
     tagnumber = opts['max'];
@@ -52,6 +59,12 @@ $.extend($.fn.tagExtract, {
       sum += occurences[k];
     }
     avg = sum / numofwords;
+    if (tagnumber === 'auto') {
+      tagnumber = Math.floor(numofwords / 10);
+      if (tagnumber < opts['min']) {
+        tagnumber = opts['min'];
+      }
+    }
     occurences = (function(occurences) {
       var keys, res, _l, _len3;
       res = {};
@@ -101,11 +114,10 @@ $.extend($.fn.tagExtract, {
       }
       binhash[minkey].push(k);
     }
-    return obj = $(el).find('.tags-extracted').each(function(i, obj) {
+    return obj = $("#" + target).each(function(i, obj) {
       var b, c, cstyle, label, tag, _len5, _p, _ref5, _results;
       c = 0;
       $(obj).empty();
-      $(obj).append("TAGS:");
       _ref5 = Object.keys(binhash).reverse();
       _results = [];
       for (_p = 0, _len5 = _ref5.length; _p < _len5; _p++) {

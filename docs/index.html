@@ -22,11 +22,12 @@
  
    <body>
 
-
-    <textarea id="text" rows="20" cols="80">
+    <textarea id="text" rows="10" cols="80">
     </textarea>
-    <div id="content"></div>
+    <span id="tags-extracted"></span>
     <button type="button" id="extract" class="btn btn-primary">Extract</button>
+
+
 
      <!-- Placed at the end of the document so the pages load faster -->
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -37,13 +38,14 @@
       <script>
 
 $('#extract').click(function(evt) {
-  $('#content').empty();
-  $('#content').text($('#text').val());
-  return $('#content').tagExtract({
+  return $('#text').tagExtract({
     clusters: ['label-primary', 'label-info', 'label-warning', 'label-danger'],
-    max: 20
+    max: 10,
+    target: 'tags-extracted'
   });
 });
+
+
       </script>
 
 
