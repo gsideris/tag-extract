@@ -53,7 +53,7 @@ $.extend $.fn.tagExtract,
         avg = sum / numofwords
         
         if tagnumber == 'auto'
-            tagnumber = numofwords // 10
+            tagnumber = numofwords // 100
             if tagnumber < opts['min']
                tagnumber = opts['min']
 

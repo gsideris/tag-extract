@@ -60,7 +60,7 @@ $.extend($.fn.tagExtract, {
     }
     avg = sum / numofwords;
     if (tagnumber === 'auto') {
-      tagnumber = Math.floor(numofwords / 10);
+      tagnumber = Math.floor(numofwords / 100);
       if (tagnumber < opts['min']) {
         tagnumber = opts['min'];
       }
