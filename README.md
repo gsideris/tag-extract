@@ -25,4 +25,6 @@ For every class="blog-post" find a maximum of 10 tags and use one cluster of lab
 For every class="blog-post" find a maximum of 20 tags and use 4 clusters of label-primary to label-danger as tag color with the first being the most frequent
 
 
+# Live Demo
+[http://gsideris.github.io/tag-extract/](http://gsideris.github.io/tag-extract/)
 
